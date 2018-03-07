@@ -3,7 +3,7 @@
 2.接口设计
     2.1 用户
         2.1.1 前台用户接口设计(POST请求方式)
-            用户登录接口 http://localhost:8081/user/login.do
+            (1) 用户登录接口 http://localhost:8081/user/login.do
                 request: username, password
                 response:
                     fail: {
@@ -16,12 +16,14 @@
                             "username" : "aaa"
                             "email" :
                             "phone" :
-                            .
-                            .
-                            .
+                            "role" :
+                            "question" :
+                            "answer" :
+                            "createtime" :
+                            "updatetime" :
                         }
                     }
-            用户注册接口 http://localhost:8081/user/register.do
+            (2) 用户注册接口 http://localhost:8081/user/register.do
                 request: username, password, email, phone, question, answer
                 response:
                     success: {
@@ -32,4 +34,129 @@
                         "status" : 1,
                         "msg" : "用户已存在"
                     }
-            检查用户名是否有效
+            (3) 检查用户名是否有效 http://localhost:8081/user/check_valid.do
+                request: str --> 根据type值决定str是username或者email
+                         type
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "用户已存在"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "校验成功"
+                    }
+            (4) 获取登录用户信息 http://localhost:8081/user/get_user_info.do
+                request: 无参数
+                response:
+                    fail: {
+                        "status" : 1，
+                        "msg" : "用户未登录，无法获取当前用户信息"
+                    }
+                    success: {
+                        "status" : 0,
+                        "data" : {
+                            "id" : 22,
+                            "username" : "aaa"
+                            "email" :
+                            "phone" :
+                            "role" :
+                            "question" :
+                            "answer" :
+                            "createtime" :
+                            "updatetime" :
+                        }
+                    }
+            (5) 忘记密码 http://localhost:8081/user/forget_get_question.do
+                request: username
+                resposne:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "该用户未设置找回密码问题"
+                    }
+                    success: {
+                        "status" : 0,
+                        "data" : "用户设置的问题"
+                    }
+            (6) 提交问题答案 http://localhost:8081/user/forget_check_answer.do
+                request: username, question, answer
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "问题的答案错误"
+                    }
+                    success: {
+                        "status" : 0,
+                        "data" : "531ef4b4-9663-4e6d-9a20-fb56367446a5"
+                    }
+                    说明：当正确返回的时候，值里面包含一个token值，在进行修改密码的时候需要用到这个值
+            (7) 忘记密码的重置密码 http://localhost:8081/user/forget_reset_password.do
+                request: username passwordNew forgetToken
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "修改密码操作失败"
+                    } 或者 {
+                        "status" : 1,
+                        "msg" : "token已失效"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "修改密码成功"
+                    }
+            (8) 登录状态重置密码 http://localhost:8081/user/reset_password.do
+                request: passwordOld passwordNew
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "旧密码输入错误"
+                    }
+                    success: {
+                        "status" : 0
+                        "msg" : "修改密码成功"
+                    }
+            (9) 登录状态更新个人信息 http://localhost:8081/user/update_info.do
+                request: email phone question answer
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "用户未登录"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "更新个人信息成功"
+                    }
+            (10) 获取当前用户的详细信息并强制登录 http://localhost:8081/user/get_info.do
+                request: 无参数
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "用户未登录，无法获取当前用户详细信息，status=10，强制登录"
+                    }
+                    success: {
+                        "status": 0,
+                        "data": {
+                            "id": 1,
+                            "username": "admin",
+                            "password": "",
+                            "email": "admin@163.com",
+                            "phone": "13800138000",
+                            "question": "question",
+                            "answer": "answer",
+                            "role": 1,
+                            "createTime": 1478422605000,
+                            "updateTime": 1491305256000
+                        }
+                    }
+            (11) 退出登录 http://localhost:8081/user/logout.do
+                request: 无参数
+                response:
+                    fail: {
+                        "status" : 1,
+                        "msg" : "服务器异常"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "退出成功"
+                    }
+
