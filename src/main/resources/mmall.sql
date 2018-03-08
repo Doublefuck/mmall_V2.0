@@ -208,3 +208,6 @@ insert into `mmall_user` values ('1', 'admin', '427338237BD929443EC5D48E24FD2B1A
 commit;
 
 set foreign_key_checks = 1;
+
+
+select * from mmall_user;

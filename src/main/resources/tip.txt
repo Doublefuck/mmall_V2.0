@@ -126,7 +126,7 @@
                         "status" : 0,
                         "msg" : "更新个人信息成功"
                     }
-            (10) 获取当前用户的详细信息并强制登录 http://localhost:8081/user/get_info.do
+            (10)获取当前用户的详细信息并强制登录 http://localhost:8081/user/get_info.do
                 request: 无参数
                 response:
                     fail: {
@@ -148,7 +148,7 @@
                             "updateTime": 1491305256000
                         }
                     }
-            (11) 退出登录 http://localhost:8081/user/logout.do
+            (11)退出登录 http://localhost:8081/user/logout.do
                 request: 无参数
                 response:
                     fail: {
