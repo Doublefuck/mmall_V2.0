@@ -159,4 +159,47 @@
                         "status" : 0,
                         "msg" : "退出成功"
                     }
-
+    2.2 商品分类
+        (1) 添加商品类 http://localhost:8081/manage/category/add_category.do
+            request: categoryName parentId
+            response:
+                fail: {
+                    "status" : 1,
+                    "msg" : "添加商品类失败"
+                }
+                success: {
+                    "status" : 0,
+                    "msg" : "添加商品类成功"
+                }
+        (2) 更新categoryName  http://localhost:8081/manage/category/set_category_name.do
+            request: categoryId categoryName
+            response:
+                fail: {
+                    "status" : 1,
+                    "msg" : "更新品类参数错误"
+                } 或 {
+                    "status" : 1,
+                     "msg" : "更新商品类名字失败"
+                }
+                success: {
+                    "status" : 0,
+                    "msg" : "更新商品类名字成功"
+                }
+        (3) 查询当前节点的子节点商品类别（不递归） http://localhost:8081/manage/category/get_category.do
+            request: categoryId
+            response:
+                fail: {
+                    "status" : 1,
+                    "msg" : "未找到当前商品类的子类"
+                }
+                success: {
+                    "status" : 0,
+                    "data" : categoryList
+                }
+        (4) 递归查询当前节点及其子节点商品类别 http://localhost:8081/manage/category/get_deep_category.do
+            request: categoryId
+            response:
+                success: {
+                    "status" : 0,
+                    "data" : categorySet
+                }
