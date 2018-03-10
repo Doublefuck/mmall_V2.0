@@ -159,7 +159,7 @@
                         "status" : 0,
                         "msg" : "退出成功"
                     }
-    2.2 商品分类
+    2.2 商品类接口
         (1) 添加商品类 http://localhost:8081/manage/category/add_category.do
             request: categoryName parentId
             response:
@@ -203,3 +203,6 @@
                     "status" : 0,
                     "data" : categorySet
                 }
+    2.3 商品接口
+        2.3.1
+3 POJO<---->BO<---->VO
