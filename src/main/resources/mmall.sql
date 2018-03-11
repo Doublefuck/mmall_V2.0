@@ -210,4 +210,4 @@ commit;
 set foreign_key_checks = 1;
 
 
-select * from mmall_cart;
+select * from mmall_shipping;
