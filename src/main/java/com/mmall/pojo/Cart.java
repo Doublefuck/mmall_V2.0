@@ -2,6 +2,9 @@ package com.mmall.pojo;
 
 import java.util.Date;
 
+/**
+ * Cart对象是由userId和productId组合而成的唯一对象
+ */
 public class Cart {
     private Integer id;
 

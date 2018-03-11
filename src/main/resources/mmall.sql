@@ -21,7 +21,7 @@ create table `mmall_cart` (
 --  Records of `mmall_cart`
 -- ----------------------------
 begin;
-insert into `mmall_cart` values ('126', '21', '26', '1', '1', '2017-04-13 21:27:06', '2017-04-13 21:27:06');
+insert into `mmall_cart` values ('127', '21', '26', '1', '1', '2017-04-13 21:27:06', '2017-04-13 21:27:06');
 commit;
 
 -- ----------------------------
@@ -210,4 +210,4 @@ commit;
 set foreign_key_checks = 1;
 
 
-select * from mmall_category;
+select * from mmall_cart;

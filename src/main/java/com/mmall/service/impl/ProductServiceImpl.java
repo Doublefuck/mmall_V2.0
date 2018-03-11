@@ -10,6 +10,7 @@ import com.mmall.dao.CategoryMapper;
 import com.mmall.dao.ProductMapper;
 import com.mmall.pojo.Category;
 import com.mmall.pojo.Product;
+import com.mmall.service.ICategoryService;
 import com.mmall.service.IProductService;
 import com.mmall.vo.ProductDetailVo;
 import com.mmall.vo.ProductListVo;
@@ -31,6 +32,9 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+
+    @Autowired
+    private ICategoryService iCategoryService;
     /**
      * 更新或者保存商品
      * @param product
@@ -179,7 +183,8 @@ public class ProductServiceImpl implements IProductService {
     }
 
     /**
-     * 前台用户获取商品列表并分页
+     * 前台用户动态获取商品列表并分页
+     * 递归获取当前层级商品及其子级商品列表
      * @param keyword
      * @param categoryId
      * @param pageNum
@@ -187,7 +192,8 @@ public class ProductServiceImpl implements IProductService {
      * @return
      */
     @Override
-    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize) {
+    public ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId,
+                                                                int pageNum, int pageSize, String orderBy) {
 
         if (StringUtils.isBlank(keyword) && categoryId == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
@@ -204,7 +210,36 @@ public class ProductServiceImpl implements IProductService {
                 PageInfo pageInfo = new PageInfo(productListVoList);
                 return ServerResponse.createBySuccess(pageInfo);
             }
+            // 递归查询
+            categoryIdList = iCategoryService.selectCategoryAndChildrenById(category.getId()).getData();
         }
-        return null;
+
+        // 组装查询条件
+        if (StringUtils.isNotBlank(keyword)) {
+            keyword = new StringBuilder().append("%").append(keyword).append("%").toString();
+        }
+
+        // 开始分页
+        PageHelper.startPage(pageNum, pageSize);
+        // 排序 排序关键字以"_"分割
+        if (StringUtils.isNotBlank(orderBy)) {
+            if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+                String[] orderByArr = orderBy.split("_");
+                // orderBy("xxx xxx")
+                PageHelper.orderBy(orderByArr[0] + " " + orderByArr[1]);
+            }
+        }
+        // 获取商品列表，组装成商品vo对象
+        List<Product> productList = productMapper.selectByNameAndCategoryIds(
+                StringUtils.isBlank(keyword) ? null : keyword,
+                categoryIdList.size() == 0 ? null : categoryIdList);
+        List<ProductListVo> productListVoList = Lists.newArrayList();
+        for (Product product : productList) {
+            ProductListVo productListVo = ProductListVo.assembleProductList(product);
+            productListVoList.add(productListVo);
+        }
+        PageInfo pageInfo = new PageInfo(productList);
+
+        return ServerResponse.createBySuccess(pageInfo);
     }
 }
