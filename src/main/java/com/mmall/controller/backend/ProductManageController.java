@@ -128,7 +128,7 @@ public class ProductManageController {
     }
 
     /**
-     * 动态搜索商品
+     * 动态搜索商品并分页
      * @param session
      * @param productName
      * @param productId

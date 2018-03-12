@@ -204,5 +204,381 @@
                     "data" : categorySet
                 }
     2.3 商品接口
-        2.3.1
+        2.3.1 前台用户接口
+            (1) 获取商品详情 http://localhost:8081/product/detail.do
+                request: productId
+                response:
+                    fail : {
+                        "status" : 1,
+                        "msg" : "参数错误"
+                    } 或 {
+                        "status" : 0,
+                        "msg" : "产品已下架或者删除"
+                    }
+                    success : {
+                        "status": 0,
+                        "data":{
+                        "id": 28,
+                        "categoryId": 100012,
+                        "name": "4+64G送手环/Huawei/华为 nova 手机P9/P10plus青春",
+                        "subtitle": "NOVA青春版1999元",
+                        "mainImage": "0093f5d3-bdb4-4fb0-bec5-5465dfd26363.jpeg",
+                        "subImage": "0093f5d3-bdb4-4fb0-bec5-5465dfd26363.jpeg",
+                        "detail": "<p><img alt=\"11TB2fKK3cl0kpuFjSsziXXa.oVXa_!!1777180618.jpg\" src=\"http://img.happymmall.com/5c2d1c6d-9e09-48ce-bbdb-e833b42ff664.jpg\" width=\"790\" height=\"966\"><img alt=\"22TB2YP3AkEhnpuFjSZFpXXcpuXXa_!!1777180618.jpg\" src=\"http://img.happymmall.com/9a10b877-818f-4a27-b6f7-62887f3fb39d.jpg\" width=\"790\" height=\"1344\"><img alt=\"33TB2Yyshk.hnpuFjSZFpXXcpuXXa_!!1777180618.jpg\" src=\"http://img.happymmall.com/7d7fbd69-a3cb-4efe-8765-423bf8276e3e.jpg\" width=\"790\" height=\"700\"><img alt=\"TB2diyziB8kpuFjSspeXXc7IpXa_!!1777180618.jpg\" src=\"http://img.happymmall.com/1d7160d2-9dba-422f-b2a0-e92847ba6ce9.jpg\" width=\"790\" height=\"393\"><br></p>",
+                        "price": 1999,
+                        "stock": 9994,
+                        "status": 1,
+                        "createTime": "2017-04-13 18:57:18",
+                        "updataTime": "2017-04-13 21:45:41",
+                        "imageHost": "http://img.happymmall.com/",
+                        "parentCategoryId": 100002
+                        }
+                    }
+            (2) 动态搜索商品列表 http://localhost:8081/product/list.do
+                request: keyword categoryId pageNum pageSize ordrBy
+                response:
+                    fail: {
+                        "status" : 2,
+                        "msg" : "ILLEGAL_ARGUMENT"
+                    }
+                    success: {
+                        "status": 0,
+                        "data":{
+                            "pageNum": 1,
+                            "pageSize": 10,
+                            "size": 4,
+                            "orderBy": "price asc",
+                            "startRow": 1,
+                            "endRow": 4,
+                            "total": 4,
+                            "pages": 1,
+                            "list":[
+                                {"id": 28, "categoryId": 100012, "name": "4+64G送手环/Huawei/华为 nova 手机P9/P10plus青春", "subtitle": "NOVA青春版1999元",…},
+                                {"id": 30, "categoryId": 100002, "name": "Apple iPhone6s Plus", "subtitle": "测试iPhone 6s",…},
+                                {"id": 29, "categoryId": 100008, "name": "Haier/海尔HJ100-1HU1 10公斤滚筒洗衣机全自动带烘干家用大容量 洗烘一体", "subtitle": "门店机型 德邦送货",…},
+                                {"id": 26, "categoryId": 100002, "name": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机", "subtitle": "iPhone 7，现更以红色呈现。",…}
+                            ],
+                            "firstPage": 1,
+                            "prePage": 0,
+                            "nextPage": 0,
+                            "lastPage": 1,
+                            "isFirstPage": true,
+                            "isLastPage": true,
+                            "hasPreviousPage": false,
+                            "hasNextPage": false,
+                            "navigatePages": 8,
+                            "navigatepageNums":[1]
+                        }
+                    }
+        2.3.2 后台商品接口
+            (1)  新增或者更新商品 http://localhost:8081/manage/product/save.do
+                request: product
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "NEED_LOGIN"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "无权限操作，需要管理员权限"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "更新商品成功"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "新增商品失败"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "新增或更新商品的参数不正确"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "更新商品成功"
+                    } 或 {
+                        "status" : 0,
+                        "msg" : "新增商品成功"
+                    }
+            (2) 修改商品销售状态 http://localhost:8081/product/set_sale_status.do
+                reuest: productId status
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "NEED_LOGIN"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "无权限操作，需要管理员权限"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "修改商品销售状态失败"
+                    }
+                    success: {
+                        "status" : 0,
+                        "msg" : "修改商品销售状态成功"
+                    }
+            (3) 获取商品详情 http://localhost:8081/product/detail.do
+                request: productId
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "NEED_LOGIN"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "无权限操作，需要管理员权限"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "参数错误"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "产品已下架或删除"
+                    }
+                    success: {
+                        status": 0,
+                        "data":{
+                            "id": 26,
+                            "categoryId": 100002,
+                            "name": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",
+                            "subtitle": "iPhone 7，现更以红色呈现。",
+                            "mainImage": "241997c4-9e62-4824-b7f0-7425c3c28917.jpeg",
+                            "subImage": "241997c4-9e62-4824-b7f0-7425c3c28917.jpeg",
+                            "detail": "<p><img alt=\"10000.jpg\" src=\"http://img.happymmall.com/00bce8d4-e9af-4c8d-b205-e6c75c7e252b.jpg\" width=\"790\" height=\"553\"><br></p><p><img alt=\"20000.jpg\" src=\"http://img.happymmall.com/4a70b4b4-01ee-46af-9468-31e67d0995b8.jpg\" width=\"790\" height=\"525\"><br></p><p><img alt=\"30000.jpg\" src=\"http://img.happymmall.com/0570e033-12d7-49b2-88f3-7a5d84157223.jpg\" width=\"790\" height=\"365\"><br></p><p><img alt=\"40000.jpg\" src=\"http://img.happymmall.com/50515c02-3255-44b9-a829-9e141a28c08a.jpg\" width=\"790\" height=\"525\"><br></p><p><img alt=\"50000.jpg\" src=\"http://img.happymmall.com/c138fc56-5843-4287-a029-91cf3732d034.jpg\" width=\"790\" height=\"525\"><br></p><p><img alt=\"60000.jpg\" src=\"http://img.happymmall.com/c92d1f8a-9827-453f-9d37-b10a3287e894.jpg\" width=\"790\" height=\"525\"><br></p><p><br></p><p><img alt=\"TB24p51hgFkpuFjSspnXXb4qFXa-1776456424.jpg\" src=\"http://img.happymmall.com/bb1511fc-3483-471f-80e5-c7c81fa5e1dd.jpg\" width=\"790\" height=\"375\"><br></p><p><br></p><p><img alt=\"shouhou.jpg\" src=\"http://img.happymmall.com/698e6fbe-97ea-478b-8170-008ad24030f7.jpg\" width=\"750\" height=\"150\"><br></p><p><img alt=\"999.jpg\" src=\"http://img.happymmall.com/ee276fe6-5d79-45aa-8393-ba1d210f9c89.jpg\" width=\"790\" height=\"351\"><br></p>",
+                            "price": 6999,
+                            "stock": 9991,
+                            "status": 1,
+                            "createTime": "",
+                            "updataTime": "2017-04-13 21:45:41",
+                            "imageHost": "http://img.happymmall.com/",
+                            "parentCategoryId": 0
+                        }
+                    }
+            (4) 获取商品列表并分页 http://localhost:8081/product/list.do
+                request: pageNum pageSize
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "NEED_LOGIN"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "无权限操作，需要管理员权限"
+                    }
+                    success: {
+                        status": 0,
+                        "data":{
+                            "pageNum": 1,
+                            "pageSize": 10,
+                            "size": 5,
+                            "orderBy": null,
+                            "startRow": 1,
+                            "endRow": 5,
+                            "total": 5,
+                            "pages": 1,
+                            "list":[
+                                {"id": 26, "categoryId": 100002, "name": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机", "subtitle": "iPhone 7，现更以红色呈现。",…},
+                                {"id": 27, "categoryId": 100006, "name": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用", "subtitle": "送品牌烤箱，五一大促",…},
+                                {"id": 28, "categoryId": 100012, "name": "4+64G送手环/Huawei/华为 nova 手机P9/P10plus青春", "subtitle": "NOVA青春版1999元",…},
+                                {"id": 29, "categoryId": 100008, "name": "Haier/海尔HJ100-1HU1 10公斤滚筒洗衣机全自动带烘干家用大容量 洗烘一体", "subtitle": "门店机型 德邦送货",…},
+                                {"id": 30, "categoryId": 100002, "name": "Apple iPhone6s Plus", "subtitle": "测试iPhone 6s",…}
+                            ],
+                            "firstPage": 1,
+                            "prePage": 0,
+                            "nextPage": 0,
+                            "lastPage": 1,
+                            "isFirstPage": true,
+                            "isLastPage": true,
+                            "hasPreviousPage": false,
+                            "hasNextPage": false,
+                            "navigatePages": 8,
+                            "navigatepageNums":[1]
+                        }
+                    }
+            (5) 动态搜索商品并分页 http://localhost:8081/product/search.do
+                request: productName productId pageNum pageSize
+                response:
+                    fail: {
+                        "status" : 10,
+                        "msg" : "NEED_LOGIN"
+                    } 或 {
+                        "status" : 1,
+                        "msg" : "无权限操作，需要管理员权限"
+                    }
+                    success: {
+                        status": 0,
+                        "data":{
+                            "pageNum": 1,
+                            "pageSize": 10,
+                            "size": 1,
+                            "orderBy": null,
+                            "startRow": 1,
+                            "endRow": 1,
+                            "total": 1,
+                            "pages": 1,
+                            "list":[
+                                {"id": 27, "categoryId": 100006, "name": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用", "subtitle": "送品牌烤箱，五一大促",…}
+                            ],
+                            "firstPage": 1,
+                            "prePage": 0,
+                            "nextPage": 0,
+                            "lastPage": 1,
+                            "isFirstPage": true,
+                            "isLastPage": true,
+                            "hasPreviousPage": false,
+                            "hasNextPage": false,
+                            "navigatePages": 8,
+                            "navigatepageNums":[1]
+                        }
+                    }
+    2.4 购物车接口
+        (1) 查询购物车商品 http://localhost:8081/cart/list.do
+            request:
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 128, "userId": 22, "productId": 26, "quantity": 10, "productName": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",…},
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…}
+                        ],
+                        "cartTotalPrice": 119475,
+                        "allChecked": true,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (2) 新增商品到购物车 http://localhost:8081/cart/add.do
+            request: count productId
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                } 或 {
+                    "status" : 2,
+                    "msg" : "ILLEGAL_ARGUMENT"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 128, "userId": 22, "productId": 26, "quantity": 20, "productName": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",…},
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…}
+                        ],
+                        "cartTotalPrice": 189465,
+                        "allChecked": true,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (3) 删除购物车商品 http://localhost:8081/cart/delete.do
+            request: productIds
+            response:
+               fail: {
+                   "status" : 10,
+                   "msg" : "NEED_LOGIN"
+               } 或 {
+                   "status" : 2,
+                   "msg" : "ILLEGAL_ARGUMENT"
+               }
+               success: {
+                   status": 0,
+                   "data":{
+                       "cartProductVoList":[
+                           {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…}
+                       ],
+                       "cartTotalPrice": 49485,
+                       "allChecked": true,
+                       "imageHost": "http://img.happymmall.com/"
+                   }
+               }
+        (4) 商品更新为全选 http://localhost:8081/cart/select_all.do
+            request:
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…}
+                        ],
+                        "cartTotalPrice": 49485,
+                        "allChecked": true,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (5) 商品更新为全不选 http://localhost:8081/cart/un_select_all.do
+            request:
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…}
+                        ],
+                        "cartTotalPrice": 49485,
+                        "allChecked": false,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (6) 商品单独选 http://localhost:8081/cart/select.do
+            request: productId
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…},
+                            {"id": 130, "userId": 22, "productId": 26, "quantity": 10, "productName": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",…}
+                        ],
+                        "cartTotalPrice": 119475,
+                        "allChecked": true,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (7) 商品单独不选 http://localhost:8081/cart/un_select.do
+            request: productId
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…},
+                            {"id": 130, "userId": 22, "productId": 26, "quantity": 10, "productName": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",…}
+                        ],
+                        "cartTotalPrice": 119475,
+                        "allChecked": false,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
+        (8) 查询当前用户购物车所有的商品 http://localhost:8081/cart/un_select.do
+            request:
+            response:
+                fail: {
+                    "status" : 10,
+                    "msg" : "NEED_LOGIN"
+                }
+                success: {
+                    status": 0,
+                    "data":{
+                        "cartProductVoList":[
+                            {"id": 129, "userId": 22, "productId": 27, "quantity": 15, "productName": "Midea/美的 BCD-535WKZM(E)冰箱双开门对开门风冷无霜智能电家用",…},
+                            {"id": 130, "userId": 22, "productId": 26, "quantity": 10, "productName": "Apple iPhone 7 Plus (A1661) 128G 玫瑰金色 移动联通电信4G手机",…}
+                        ],
+                        "cartTotalPrice": 119475,
+                        "allChecked": false,
+                        "imageHost": "http://img.happymmall.com/"
+                    }
+                }
 3 POJO<---->BO<---->VO

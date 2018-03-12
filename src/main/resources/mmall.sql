@@ -114,7 +114,7 @@ create table `mmall_pay_info` (
   `order_no` bigint(20) default null comment '订单号',
   `pay_platform` int(10) default null comment '支付平台:1-支付宝,2-微信',
   `platform_number` varchar(200) default null comment '支付宝支付流水号',
-  `platform_status` varchar(20) default null comment '支付宝支付状态',
+  `platform_status` varchar(20) default null comment '支付状态',
   `create_time` datetime default null comment '创建时间',
   `update_time` datetime default null comment '更新时间',
   primary key (`id`)
@@ -210,4 +210,4 @@ commit;
 set foreign_key_checks = 1;
 
 
-select * from mmall_shipping;
+select * from mmall_product;

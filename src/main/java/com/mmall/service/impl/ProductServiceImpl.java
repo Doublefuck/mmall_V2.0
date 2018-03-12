@@ -35,6 +35,7 @@ public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private ICategoryService iCategoryService;
+
     /**
      * 更新或者保存商品
      * @param product
@@ -62,9 +63,9 @@ public class ProductServiceImpl implements IProductService {
                 // 新增操作
                 rowCount = productMapper.insert(product);
                 if (rowCount > 0) {
-                    return ServerResponse.createBySuccessMsg("新增产品成功");
+                    return ServerResponse.createBySuccessMsg("新增商品成功");
                 }
-                return ServerResponse.createBySuccessMsg("新增产品失败");
+                return ServerResponse.createBySuccessMsg("新增商品失败");
             }
         } else {
             return ServerResponse.createByErrorMsg("新增或更新商品的参数不正确");

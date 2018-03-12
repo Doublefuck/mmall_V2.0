@@ -198,7 +198,7 @@
     </dependency>
 
 
-    <!-- alipay -->
+    <!-- alipay 依赖版本号与支付宝指定的版本号必须一致-->
     <dependency>
       <groupId>commons-codec</groupId>
       <artifactId>commons-codec</artifactId>
