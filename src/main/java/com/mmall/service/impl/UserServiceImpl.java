@@ -2,11 +2,11 @@ package com.mmall.service.impl;
 
 import com.mmall.common.Const;
 import com.mmall.common.ServerResponse;
-import com.mmall.common.TokenCache;
 import com.mmall.dao.UserMapper;
 import com.mmall.pojo.User;
 import com.mmall.service.IUserService;
 import com.mmall.util.MD5Util;
+import com.mmall.util.RedisShardedPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -150,7 +150,9 @@ public class UserServiceImpl implements IUserService {
             // 生成token
             String forgetToken = UUID.randomUUID().toString();
             // 本地缓存保存token，期限为12小时
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
+            //TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
+            // redis保存token，期限为12小时
+            RedisShardedPoolUtil.setKeyEx(Const.TOKEN_PREFIX + username, forgetToken, 60*60*12);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMsg("问题的答案错误");
@@ -175,7 +177,9 @@ public class UserServiceImpl implements IUserService {
             return ServerResponse.createByErrorMsg("用户不存在");
         }
         // 获取本地缓存的token
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        // String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        // 获取redis中保存的token
+        String token = RedisShardedPoolUtil.getKey(Const.TOKEN_PREFIX + username);
         if (StringUtils.isBlank(token)) {
             return ServerResponse.createByErrorMsg("token无效或者过期");
         }

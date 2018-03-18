@@ -7,13 +7,18 @@ import com.mmall.common.ServerResponse;
 import com.mmall.pojo.User;
 import com.mmall.service.IOrderService;
 import com.mmall.service.IUserService;
+import com.mmall.util.CookieUtil;
+import com.mmall.util.JsonUtil;
+import com.mmall.util.RedisShardedPoolUtil;
 import com.mmall.vo.OrderVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -32,17 +37,22 @@ public class OrderManageController {
 
     /**
      * 管理员查看订单列表
-     * @param session
+     * @param request
      * @param pageNo
      * @param pageSize
      * @return
      */
     @RequestMapping("list.do")
     @ResponseBody
-    public ServerResponse<PageInfo> orderList(HttpSession session,
+    public ServerResponse<PageInfo> orderList(HttpServletRequest request,
                                               @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                               @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录，无法获取当前用户的信息");
+        }
+        String userJsonStr = RedisShardedPoolUtil.getKey(loginToken);
+        User user = JsonUtil.string2Obj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -56,14 +66,19 @@ public class OrderManageController {
 
     /**
      * 管理员查询某一订单详情
-     * @param session
+     * @param request
      * @param orderNo
      * @return
      */
     @RequestMapping("detail.do")
     @ResponseBody
-    public ServerResponse<OrderVo> orderList(HttpSession session, Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<OrderVo> orderList(HttpServletRequest request, Long orderNo) {
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录，无法获取当前用户的信息");
+        }
+        String userJsonStr = RedisShardedPoolUtil.getKey(loginToken);
+        User user = JsonUtil.string2Obj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -77,7 +92,7 @@ public class OrderManageController {
 
     /**
      * 动态搜索并分页（一期精确匹配订单号）
-     * @param session
+     * @param request
      * @param orderNo
      * @param pageNo
      * @param pageSize
@@ -85,10 +100,15 @@ public class OrderManageController {
      */
     @RequestMapping("search.do")
     @ResponseBody
-    public ServerResponse<PageInfo> orderSearch(HttpSession session, Long orderNo,
+    public ServerResponse<PageInfo> orderSearch(HttpServletRequest request, Long orderNo,
                                                 @RequestParam(value = "pageNo", defaultValue = "1") Integer pageNo,
                                                 @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录，无法获取当前用户的信息");
+        }
+        String userJsonStr = RedisShardedPoolUtil.getKey(loginToken);
+        User user = JsonUtil.string2Obj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }
@@ -102,14 +122,19 @@ public class OrderManageController {
 
     /**
      * 管理员管理发货状态
-     * @param session
+     * @param request
      * @param orderNo
      * @return
      */
     @RequestMapping("send_goods.do")
     @ResponseBody
-    public ServerResponse<String> orderSendGoods(HttpSession session, Long orderNo) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> orderSendGoods(HttpServletRequest request, Long orderNo) {
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorMsg("用户未登录，无法获取当前用户的信息");
+        }
+        String userJsonStr = RedisShardedPoolUtil.getKey(loginToken);
+        User user = JsonUtil.string2Obj(userJsonStr, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMsg(ResponseCode.NEED_LOGIN.getCode(), "用户未登录，请登录");
         }

@@ -16,6 +16,15 @@ public class Const {
 
     public static final String USERNAME = "username";
 
+    public static final String TOKEN_PREFIX = "token_";
+
+    /**
+     * redis存储数据期限
+     */
+    public interface RedisCacheExtime {
+        int REDIS_SESSION_EXTIME = 60 * 30; // 有效期为30分钟
+    }
+
     public interface Cart {
         int CHECKED = 1; // 商品被选中
         int UN_CHECKED = 0; //商品没有被选中
