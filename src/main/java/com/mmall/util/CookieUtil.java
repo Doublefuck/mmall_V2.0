@@ -28,6 +28,7 @@ public class CookieUtil {
         cookie.setPath("/"); //保存路径为tomcat下的webapp目录，则该目录下的所有应用都能访问到该cookie
         cookie.setMaxAge(60*60*24*356); // 期限一年
         cookie.setHttpOnly(true);
+        response.addCookie(cookie);
         log.info("write cookieNmae:{},cookieValue:{}", cookie.getName(), cookie.getValue());
     }
 

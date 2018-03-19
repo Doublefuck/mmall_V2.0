@@ -30,7 +30,15 @@
         </mvc:message-converters>
     </mvc:annotation-driven>
 
-
+    <!--拦截器-->
+    <mvc:interceptors>
+        <!--定义在此处的所有的bean都会被拦截-->
+        <mvc:interceptor>
+            <mvc:mapping path="/manage/**"/>
+            <mvc:exclude-mapping path="/manage/user/login.do" />
+            <bean class="com.mmall.controller.common.interceptor.AuthorityInterceptor" />
+        </mvc:interceptor>
+    </mvc:interceptors>
 
     <!-- 文件上传 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

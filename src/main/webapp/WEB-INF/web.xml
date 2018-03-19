@@ -34,6 +34,15 @@
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
 
+    <!--<filter>-->
+        <!--<filter-name>springSessionRepositoryFilter</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>springSessionRepositoryFilter</filter-name>-->
+        <!--<url-pattern>*.do</url-pattern>-->
+    <!--</filter-mapping>-->
+
     <!-- 监听web容器的启动和关闭事件 -->
     <listener>
         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
